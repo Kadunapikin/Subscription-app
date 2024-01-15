@@ -43,6 +43,14 @@ const Register = () => {
                     <a href="/login">Login Now</a>
                 </div>
             </div>
+            <div className='mx-auto flex justify-center items-center pt-6 pb-16'>
+                <button 
+                type='submit' 
+                className='bg-[#3d5fc4] text-white rounded-md text-base uppercase w-24 py-2'
+                >
+                    Register
+                </button>
+            </div>
         </form>
     </div>
   )
