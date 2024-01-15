@@ -3,7 +3,7 @@ import React from 'react'
 const Register = () => {
   return (
     <div className='flex items-center w-full mx-auto h-screen diagonal-background'>
-        <form className='grid place-items-center lg:w5/12 sm:w-9/12 mx-auto border-white text-[#4f7cff] shadow-2xl rounded-3xl' action="">
+        <form className='grid place-items-center lg:w-5/12 sm:w-9/12 w-11/12 mx-auto bg-white text-[#4f7cff] shadow-2xl rounded-3xl' action="">
             <div className='pt-16 pb-4 text-3xl font-bold capitalize'>
                 Register To Services
             </div>
