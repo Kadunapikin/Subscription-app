@@ -21,6 +21,11 @@ const Register = () => {
             return;
         }
         const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+        if(response.user){
+            await response.user.updateProfile({
+                displayName: fullName
+            })
+        }
     }    
     
 
