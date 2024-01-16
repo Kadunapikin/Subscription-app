@@ -32,6 +32,9 @@ const Register = () => {
                 email: email,
                 username: fullName
             })
+            setFullName('');
+            setEmail('');
+            setPassword('');
         }
     }    
     
