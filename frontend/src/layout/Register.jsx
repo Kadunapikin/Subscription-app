@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import firebase from '../firebase/firebaseConfig';
 
 const Register = () => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         //write a conditional statement to check that all fields are valid
         if (!fullName || !email || !password) { 
@@ -19,6 +20,7 @@ const Register = () => {
             toast.error('Invalid email format. Please enter a valid email.');
             return;
         }
+        const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
     }    
     
 
