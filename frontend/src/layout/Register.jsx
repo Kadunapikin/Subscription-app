@@ -1,16 +1,28 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 const Register = () => {
+    const [fullName, setFullName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        console.log(fullName, email, password);
+    }
+    
+
   return (
     <div className='flex items-center w-full mx-auto h-screen diagonal-background'>
-        <form className='grid place-items-center lg:w-5/12 sm:w-9/12 w-11/12 mx-auto bg-white text-[#4f7cff] shadow-2xl rounded-3xl' action="">
+        <form onSubmit={handleSubmit} className='grid place-items-center lg:w-5/12 sm:w-9/12 w-11/12 mx-auto bg-white text-[#4f7cff] shadow-2xl rounded-3xl' action="">
             <div className='pt-16 pb-4 text-3xl font-bold capitalize'>
                 Register To Services
             </div>
             {/* full name */}
-            <div className='w-full flex flex-col px-14 py-8'>
-                <label htmlFor="">Full name</label>
+            <div className='w-full flex flex-col px-14 py-3'>
+                <label>Full name</label>
                 <input 
+                value={fullName}
+                onChange={(e) => {setFullName(e.target.value)}}
                 type="text" 
                 className='w-full border border-gray-300 rounded-lg px-3 py-3 mt-1 text-lg outline-none'
                 placeholder='your full name'
@@ -18,9 +30,11 @@ const Register = () => {
                 />
             </div>
             {/* email */}
-            <div className='w-full flex flex-col px-14 py-8'>
-                <label htmlFor="">Email</label>
+            <div className='w-full flex flex-col px-14 py-3'>
+                <label>Email</label>
                 <input 
+                value={email}
+                onChange={(e) => {setEmail(e.target.value)}}
                 type="email" 
                 className='w-full border border-gray-300 rounded-lg px-3 py-3 mt-1 text-lg outline-none'
                 placeholder='example@gmail.com'
@@ -28,9 +42,11 @@ const Register = () => {
                 />
             </div>
             {/* password */}
-            <div className='w-full flex flex-col px-14 py-8'>
-                <label htmlFor="">Password</label>
+            <div className='w-full flex flex-col px-14 py-3'>
+                <label>Password</label>
                 <input 
+                value={password}
+                onChange={(e) => {setPassword(e.target.value)}}
                 type="password" 
                 className='w-full border border-gray-300 rounded-lg px-3 py-3 mt-1 text-lg outline-none'
                 placeholder='******'
