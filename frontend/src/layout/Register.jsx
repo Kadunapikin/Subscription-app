@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 import firebase from '../firebase/firebaseConfig';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
     const [fullName, setFullName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -35,6 +38,8 @@ const Register = () => {
             setFullName('');
             setEmail('');
             setPassword('');
+
+            await navigate('/login');
         }
     }    
     
