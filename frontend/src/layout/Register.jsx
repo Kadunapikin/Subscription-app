@@ -51,7 +51,7 @@ const Register = () => {
                 Register To Services
             </div>
             {/* full name */}
-            <div className='w-full flex flex-col px-14 py-3'>
+            <div className='w-full flex flex-col px-14 pb-3'>
                 <label>Full name</label>
                 <input 
                 value={fullName}
