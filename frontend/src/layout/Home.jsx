@@ -49,16 +49,17 @@ const Home = () => {
                 serVices
             </div>
             <div className='flex justify-center items-center'>
-                <a href='/login'
+            { !userId? (<a href='/login'
                 className='bg-white px-4 py-2 uppercase w-auto rounded-lg text-xl text-[#4f7cff] font-semibold'>
                     Login
-                </a>
+                </a>) : (
                 <div className='flex justify-center items-center space-x-4'>
-                    <span className='text-white text-xl'>username</span>
+                    <span className='text-white text-xl'>{userName}</span>
                     <button className='bg-white px-4 py-2 w-auto rounded-lg text-base uppercase font-semibold text-[#4f7cff]'>
                         Logout
                     </button>
-                </div>
+                </div>)
+            }
             </div>
         </div>
         <div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 z-50 place-items-center w-9/12 mx-auto mt-20'>
