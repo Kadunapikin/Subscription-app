@@ -31,7 +31,7 @@ const Login = () => {
                 await navigate('/');    
             }    
         } catch (error) {
-            console.log(error.message);
+            console.log('loging error' + error);
         }
         //write a conditional statement to check that all fields are valid
     }    

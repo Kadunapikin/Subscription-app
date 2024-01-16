@@ -12,34 +12,40 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        try {
         //write a conditional statement to check that all fields are valid
-        if (!fullName || !email || !password) { 
-            toast.error('Please enter all required fields');
-            return;
-        }
-              // Validate email format
-        const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-        if (!emailPattern.test(email)) {
-            toast.error('Invalid email format. Please enter a valid email.');
-            return;
-        }
-        const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
-        if(response.user){
-            await response.user.updateProfile({
-                displayName: fullName
-            })
-            const uid = response.user.uid;
-            const userRef = firebase.database().ref('users' + uid);
-            await userRef.set({
-                uid: uid,
-                email: email,
-                username: fullName
-            })
-            setFullName('');
-            setEmail('');
-            setPassword('');
+            if (!fullName || !email || !password) { 
+                toast.error('Please enter all required fields');
+                return;
+            }
+                // Validate email format
+            const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+            if (!emailPattern.test(email)) {
+                toast.error('Invalid email format. Please enter a valid email.');
+                return;
+            }
+            const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            if(response.user){
+                await response.user.updateProfile({
+                    displayName: fullName
+                })
+                const uid = response.user.uid;
+                const userRef = firebase.database().ref('users' + uid);
+                await userRef.set({
+                    uid: uid,
+                    email: email,
+                    username: fullName
+                })
+                setFullName('');
+                setEmail('');
+                setPassword('');
 
-            await navigate('/login');
+                await navigate('/login');
+            }
+
+        } catch (error) {
+            console.log('register error: ' + error.message);
         }
     }    
     
