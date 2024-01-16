@@ -13,7 +13,7 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            if (!fullName || !email || !password) { 
+            if (!email || !password) { 
                 toast.error('Please enter all required fields');
                 return;
             }
@@ -24,16 +24,17 @@ const Login = () => {
                 return;
             }
     
-            const respobse = await firebase.auth().signInWithEmailAndPassword(email, password);
-            if(respobse.user){
+            const response = await firebase.auth().signInWithEmailAndPassword(email, password);
+            if(response.user){
+                toast.success('Login successful');
                 setEmail('');
                 setPassword('');
                 await navigate('/');    
             }    
         } catch (error) {
             console.log('loging error' + error);
+            toast.error('Login failed. Please check your email and password.');
         }
-        //write a conditional statement to check that all fields are valid
     }    
     
 
