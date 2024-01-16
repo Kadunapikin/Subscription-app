@@ -25,6 +25,13 @@ const Register = () => {
             await response.user.updateProfile({
                 displayName: fullName
             })
+            const uid = response.user.uid;
+            const userRef = firebase.database().ref('users' + uid);
+            await userRef.set({
+                uid: uid,
+                email: email,
+                username: fullName
+            })
         }
     }    
     
