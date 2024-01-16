@@ -4,6 +4,8 @@ import Login from './layout/Login';
 import Register from './layout/Register';
 import Success from './layout/Success';
 import Cancel from './layout/Cancel';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
@@ -18,6 +20,7 @@ function App() {
         <Route path="/cancel" element={<Cancel />} />;
       </Routes>
     </BrowserRouter>
+    <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
     </>
   )
 }

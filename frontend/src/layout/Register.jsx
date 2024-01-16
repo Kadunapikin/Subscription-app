@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [fullName, setFullName] = useState('');
@@ -7,8 +8,18 @@ const Register = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(fullName, email, password);
-    }
+        //write a conditional statement to check that all fields are valid
+        if (!fullName || !email || !password) { 
+            toast.error('Please enter all required fields');
+            return;
+        }
+              // Validate email format
+        const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+        if (!emailPattern.test(email)) {
+            toast.error('Invalid email format. Please enter a valid email.');
+            return;
+        }
+    }    
     
 
   return (
