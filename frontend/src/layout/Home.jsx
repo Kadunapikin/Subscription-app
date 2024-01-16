@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import basic from '../assets/basic.jpg';
 import standard from '../assets/standard.jpg';
 import premium from '../assets/premium.jpg';
+import firebase from '../firebase/firebaseConfig';
 
 
 const data = [
@@ -26,6 +27,20 @@ const data = [
 ]
 
 const Home = () => {
+    const [userId, setUserId] = useState(''); 
+    const [userName, setUserName] = useState('');
+
+    useEffect(() => {
+        firebase.auth().onIdTokenChanged((user) => {
+            if(user) {
+                setUserId(user.uid);
+                setUserName(user.displayName);
+            } else {
+                setUserId('');
+                setUserName('');
+            }
+        })
+    }, [userId]); 
   return (
     <>
     <div className='flex flex-col items-center w-full mx-auto min-h-screen diagonal-background overflow-x-hidden'>
