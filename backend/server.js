@@ -25,6 +25,26 @@ app.use(cors({
 const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
 //Create subscription
+const stripeSession = async(plan) => {
+    try {
+        const session = await stripe.checkout.session.create({
+            mode: subscription,
+            payment_method_types: ['card'],
+            line_items: [
+                {
+                    price: plan,
+                    quantity: 1
+                },
+            ],
+            success_url: 'http://localhost:5173/success',
+            cancel_url: 'http://localhost:5173/cancel'
+        });
+        return session;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 app.post('/api/v1/create-subscription-checkout-session', async (req, res) => {
     const {plan, customerId} = req.body;
     let planId = null;
