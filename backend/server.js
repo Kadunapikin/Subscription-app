@@ -51,6 +51,12 @@ app.post('/api/v1/create-subscription-checkout-session', async (req, res) => {
     if(plan == 9) planId = basic;
     else if(plan == 19) planId = standard;
     else if(plan == 39) planId = premium;
+
+    try {
+        const session = await stripeSession(planId);
+    } catch (error) {
+        res.send(error);
+    }
 });
 
 
