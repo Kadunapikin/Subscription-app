@@ -25,6 +25,11 @@ const Register = () => {
                 toast.error('Invalid email format. Please enter a valid email.');
                 return;
             }
+                  // Validate password length
+            if (password.length < 6) {
+                toast.error('Password must be at least 6 characters long.');
+                return;
+            }
             const response = await firebase.auth().createUserWithEmailAndPassword(email, password);
             if(response.user){
                 await response.user.updateProfile({
