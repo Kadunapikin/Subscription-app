@@ -55,7 +55,8 @@ const Home = () => {
                 </a>) : (
                 <div className='flex justify-center items-center space-x-4'>
                     <span className='text-white text-xl'>{userName}</span>
-                    <button className='bg-white px-4 py-2 w-auto rounded-lg text-base uppercase font-semibold text-[#4f7cff]'>
+                    <button onClick={() => firebase.auth().signOut()}
+                    className='bg-white px-4 py-2 w-auto rounded-lg text-base uppercase font-semibold text-[#4f7cff]'>
                         Logout
                     </button>
                 </div>)
