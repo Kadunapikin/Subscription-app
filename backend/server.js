@@ -11,6 +11,8 @@ const port = 5000;
 app.use(express.json());
 app.use(bodyParser.json());
 
+const { basic, standard, premium } = ['price_1OZehTF3aDYPvbFaNP2fTYjf', 'price_1OZf5yF3aDYPvbFalgdfossS', 'price_1OZf7pF3aDYPvbFaFynDwITV'];
+
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
     databaseURL: "https://stripe-subscription-ab0e1-default-rtdb.firebaseio.com"
