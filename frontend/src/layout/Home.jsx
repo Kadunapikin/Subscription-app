@@ -41,6 +41,30 @@ const Home = () => {
             }
         })
     }, [userId]); 
+
+    const checkout = (plan) => {
+        fetch('https://localhost:5000/api/v1/create-subscription-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            mode: 'cors',
+            body: JSON.stringify({
+                plan: plan, 
+                customerId: userId,
+            })
+        })
+        .then((response) => {
+            if(response.ok) return response.json();
+            console.log(response.message);
+            return response.json().then((json) => Promise.reject(json));
+        })
+        .then(({session}) => {
+            window.location = session.url;
+        })
+        .catch((error) => {
+            console.log(error.message);
+        })
+    }
+
   return (
     <>
     <div className='flex flex-col items-center w-full mx-auto min-h-screen diagonal-background overflow-x-hidden'>
@@ -80,7 +104,8 @@ const Home = () => {
                         </div>
                         <div className='text-4xl text-center font-bold py-4'>${item.price}</div>
                         <div className='mx-auto flex justify-center items-center my-3'>
-                            <button className='bg-[#3d5fc4] text-white rounded-md text-base uppercase w-24 py-2 font-bold'>
+                            <button onClick={() => checkout(Number(item.price))} 
+                            className='bg-[#3d5fc4] text-white rounded-md text-base uppercase w-24 py-2 font-bold'>
                                 Start
                             </button>
                         </div>
