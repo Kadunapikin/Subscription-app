@@ -22,7 +22,16 @@ app.use(cors({
     origin: 'http://localhost:5173'
 }));
 
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
 
+//Create subscription
+app.post('/api/v1/create-subscription-checkout-session', async (req, res) => {
+    const {plan, customerId} = req.body;
+    let planId = null;
+    if(plan == 9) planId = basic;
+    else if(plan == 19) planId = standard;
+    else if(plan == 39) planId = premium;
+});
 
 
 app.listen(port, () => {
