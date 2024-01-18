@@ -42,6 +42,7 @@ const Register = () => {
                     email: email,
                     username: fullName
                 })
+                toast.success('Registration successful');
                 setFullName('');
                 setEmail('');
                 setPassword('');
