@@ -1,7 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import success from '../assets/success.jpg';
+import firebase from '../firebase/firebaseConfig';
 
 const Success = () => {
+
+  const [userId, setUserId] = useState('');
+  const [sessionId, setSessionId] = useState('');
+
+  useEffect(() => {
+    firebase.auth().onAuthStateChanged((user) => {
+      if(user) {
+        setUserId(user.uid);
+        const userRef = firebase.database().ref('users/' + user.uid);
+        userRef.on('value', (snapshot) => {
+          const userVal = snapshot.va();
+          if(userVal) {
+            setSessionId(user.subscription.sessionId || '');
+          }
+        })
+      }
+    })
+  }, [userId, setUserId]);
+
   return (
     <div className='m-0 p-0'>
       <div className='w-full min-h-[80vh] flex flex-col justify-center items-center'>
