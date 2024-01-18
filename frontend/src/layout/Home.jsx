@@ -28,12 +28,21 @@ const data = [
 const Home = () => {
     const [userId, setUserId] = useState('');
     const [userName, setUserName] = useState('');
+    const [planType, setPlanType] = useState('');
 
     useEffect(() => {
         firebase.auth().onIdTokenChanged((user) => {
             if (user) {
                 setUserId(user.uid);
                 setUserName(user.displayName);
+
+                const userRef = firebase.database().ref('users/' + user.uid);
+                userRef.on('value', (snapshot) => {
+                    const userVal = snapshot.val();
+                    if (userVal) {
+                        setPlanType(user.subscription.planType || '');
+                    }
+                })
             } else {
                 setUserId('');
                 setUserName('');
