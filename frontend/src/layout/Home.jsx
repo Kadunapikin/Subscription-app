@@ -39,9 +39,11 @@ const Home = () => {
                 const userRef = firebase.database().ref('users/' + user.uid);
                 userRef.on('value', (snapshot) => {
                     const userVal = snapshot.val();
-                    if (userVal) {
-                        setPlanType(user.subscription.planType || '');
-                    }
+                    if (userVal && userVal.subscription && userVal.subscription.planType) {
+                        setPlanType(userVal.subscription.planType);
+                    } else {
+                        setPlanType(''); // Set a default value if planType is not defined
+                    }               
                 })
             } else {
                 setUserId('');
@@ -98,7 +100,8 @@ const Home = () => {
             <div className='grid lg:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5 z-50 place-items-center w-9/12 mx-auto mt-20'>
                 {data.map((item, index) => (
                     <div key={index}
-                        className='bg-white px-6 py-8 rounded-xl text-[#4f7cff] w-full mx-auto grid place-items-center'>
+                        className={`bg-white px-6 py-8 rounded-xl text-[#4f7cff] w-full mx-auto grid place-items-center 
+                        ${planType === item.title.toLowerCase() && 'border-[16px] border-green-400'}`}>
                         <img src={item.src}
                             alt=""
                             width={200}
@@ -111,10 +114,20 @@ const Home = () => {
                         </div>
                         <div className='text-4xl text-center font-bold py-4'>${item.price}</div>
                         <div className='mx-auto flex justify-center items-center my-3'>
-                            <button onClick={() => checkout(item.id)}
+                            {
+                                planType === item.title.toLowerCase() ?
+                                <button className='bg-green-600 text-white rounded-md text-base uppercase w-24 py-2 font-bold'>
+                                Subscribed
+                                </button> :
+                                <button onClick={() => checkout(item.id)}
                                 className='bg-[#3d5fc4] text-white rounded-md text-base uppercase w-24 py-2 font-bold'>
                                 Start
-                            </button>
+                                </button>
+                            }
+                            {/* <button onClick={() => checkout(item.id)}
+                                className='bg-[#3d5fc4] text-white rounded-md text-base uppercase w-24 py-2 font-bold'>
+                                Start
+                            </button> */}
                         </div>
                     </div>
                 ))}

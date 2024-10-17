@@ -1,27 +1,47 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import success from '../assets/success.jpg';
 import firebase from '../firebase/firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 
 const Success = () => {
-  const navigate = useNavigate
+  const navigate = useNavigate();
   const [userId, setUserId] = useState('');
   const [sessionId, setSessionId] = useState('');
 
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
-      if(user) {
+      if (user) {
         setUserId(user.uid);
         const userRef = firebase.database().ref('users/' + user.uid);
         userRef.on('value', (snapshot) => {
-          const userVal = snapshot.va();
-          if(userVal) {
-            setSessionId(user.subscription.sessionId || '');
-          }
-        })
+            const userVal = snapshot.val();
+            if (userVal && userVal.subscription && userVal.subscription.sessionId) {
+                setSessionId(userVal.subscription.sessionId);
+            } else {
+                setSessionId(''); // Set a default value or handle the case when the data is not available
+            }
+        });
       }
-    })
-  }, [userId, setUserId]);
+    });
+}, [userId, setUserId]);
+
+
+  //original useEffect
+  // useEffect(() => {
+  //   firebase.auth().onAuthStateChanged((user) => {
+  //     if(user) {
+  //       setUserId(user.uid);
+  //       const userRef = firebase.database().ref('users/' + user.uid);
+  //       userRef.on('value', (snapshot) => {
+  //         const userVal = snapshot.val();
+  //         if(userVal) {
+  //           setSessionId(user.subscription.sessionId || '');
+  //         }
+  //       })
+  //     }
+  //   })
+  // }, [userId, setUserId]);
 
   const handlePaymentSuccess = () => {
     fetch('http://localhost:5000/api/v1/payment-success', {
@@ -52,7 +72,7 @@ const Success = () => {
           <h3 className='text-4xl pt-8 lg:pt-0 font-bold text-center text-slate-700'>
             Payment Successful
           </h3>
-          <button onClick={() => handlePaymentSuccess}
+          <button onClick={handlePaymentSuccess}
           className='w-40 uppercase bg-[#3d5fc4] text-white text-xl my-16 px-2 rounded'>Proceed</button>
         </div>
 
