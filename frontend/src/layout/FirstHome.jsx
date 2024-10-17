@@ -43,7 +43,8 @@ const Home = () => {
     }, [userId]); 
 
     const checkout = (plan) => {
-        fetch('http://localhost:5000/api/v1/create-subscription-checkout-session', {
+        // fetch('http://localhost:5000/api/v1/create-subscription-checkout-session', {
+        fetch('https://subscription-app-backend-dn4a.onrender.com/api/v1/create-subscription-checkout-session', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             mode: 'cors',

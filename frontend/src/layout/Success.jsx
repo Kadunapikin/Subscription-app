@@ -44,7 +44,8 @@ const Success = () => {
   // }, [userId, setUserId]);
 
   const handlePaymentSuccess = () => {
-    fetch('http://localhost:5000/api/v1/payment-success', {
+    // fetch('http://localhost:5000/api/v1/payment-success', {
+    fetch('https://subscription-app-backend-dn4a.onrender.com/api/v1/payment-success', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
