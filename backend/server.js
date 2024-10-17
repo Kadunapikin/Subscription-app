@@ -5,7 +5,7 @@ const serviceAccount = require('./serviceAccountKey.json');
 const app = express();
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const moment = require('moment/moment');
+const moment = require('moment');
 const port = 5000;
 
 app.use(express.json());
@@ -85,16 +85,21 @@ app.post('/api/v1/payment-success', async (req, res) => {
 
     try {
         const session = await stripe.checkout.session.retrieve(sessionId);
-        if(session.payment_status === 'paid') {
+        if (session.payment_status === 'paid') {
             const subscriptionId = session.subscription;
             try {
                 const subscription = await stripe.subscriptions.retrieve(subscriptionId);
                 const user = await admin.auth().getUser(firebaseId);
-                const planId = subscription.plan.id;
-                const planType = '';
-                if (plan === 'basic') planType = basicPriceId;
-                else if (plan === 'standard') planType = standardPriceId;
-                else if (plan === 'premium') planType = premiumPriceId;
+                let planType = ''; // Initialize planType variable
+
+                // Determine the plan based on the subscription plan ID
+                if (subscription.items && subscription.items.data.length > 0) {
+                    const planId = subscription.items.data[0].price.id;
+                    if (planId === basicPriceId) planType = 'basic';
+                    else if (planId === standardPriceId) planType = 'standard';
+                    else if (planId === premiumPriceId) planType = 'premium';
+                }
+
                 const startDate = moment.unix(subscription.current_period_start).format('YYYY-MM-DD');
                 const endDate = moment.unix(subscription.current_period_end).format('YYYY-MM-DD');
                 const durationInSeconds = subscription.current_period_end - subscription.current_period_start;
@@ -104,24 +109,68 @@ app.post('/api/v1/payment-success', async (req, res) => {
                     subscription: {
                         sessionId: null,
                         planId: planId,
-                        planType: planType,
+                        planType: planType, // Assign the planType here
                         planStartDate: startDate,
                         planEndDate: endDate,
                         planDurationIn: durationInDays
                     }
                 })
+                return res.json({ message: 'Payment successful' });
             } catch (error) {
                 console.log('Error retrieving subscription plan', error);
             }
-            return res.json({message: 'Payment successful'});
         } else {
-            return res.json({message: 'Payment failed'});
+            return res.json({ message: 'Payment failed' });
         }
     } catch (error) {
         res.send(error);
         console.log(error.message);
     }
 })
+
+
+// app.post('/api/v1/payment-success', async (req, res) => {
+//     const { sessionId, firebaseId } = req.body;
+
+//     try {
+//         const session = await stripe.checkout.session.retrieve(sessionId);
+//         if(session.payment_status === 'paid') {
+//             const subscriptionId = session.subscription;
+//             try {
+//                 const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+//                 const user = await admin.auth().getUser(firebaseId);
+//                 const planId = subscription.plan.id;
+//                 const planType = '';
+//                 if (plan === 'basic') planType = basicPriceId;
+//                 else if (plan === 'standard') planType = standardPriceId;
+//                 else if (plan === 'premium') planType = premiumPriceId;
+//                 const startDate = moment.unix(subscription.current_period_start).format('YYYY-MM-DD');
+//                 const endDate = moment.unix(subscription.current_period_end).format('YYYY-MM-DD');
+//                 const durationInSeconds = subscription.current_period_end - subscription.current_period_start;
+//                 const durationInDays = moment.duration(durationInSeconds, 'seconds').asDays();
+
+//                 await admin.database().ref('users').child(user.uid).update({
+//                     subscription: {
+//                         sessionId: null,
+//                         planId: planId,
+//                         planType: planType,
+//                         planStartDate: startDate,
+//                         planEndDate: endDate,
+//                         planDurationIn: durationInDays
+//                     }
+//                 })
+//             } catch (error) {
+//                 console.log('Error retrieving subscription plan', error);
+//             }
+//             return res.json({message: 'Payment successful'});
+//         } else {
+//             return res.json({message: 'Payment failed'});
+//         }
+//     } catch (error) {
+//         res.send(error);
+//         console.log(error.message);
+//     }
+// })
 
 
 app.listen(port, () => {
