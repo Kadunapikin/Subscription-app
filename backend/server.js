@@ -19,7 +19,8 @@ admin.initializeApp({
 });
 
 app.use(cors({
-    origin: 'http://localhost:5173' // Update this with your frontend URL
+    // origin: 'http://localhost:5173' // Update this with your frontend URL
+    origin: 'https://subscription-app-frontend.onrender.com/' // Update this with your frontend URL
 }));
 
 const basicPriceId = 'price_1OZehTF3aDYPvbFaNP2fTYjf';
@@ -42,8 +43,8 @@ const stripeSession = async (plan) => {
                     quantity: 1
                 },
             ],
-            success_url: 'http://localhost:5173/success',
-            cancel_url: 'http://localhost:5173/cancel'
+            success_url: 'https://subscription-app-frontend.onrender.com/success',
+            cancel_url: 'https://subscription-app-frontend.onrender.com/cancel'
         });
         return session;
     } catch (error) {
